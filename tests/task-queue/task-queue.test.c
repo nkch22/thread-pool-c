@@ -39,7 +39,7 @@ void test_task_queue_pop() {
 
     TEST_ASSERT(casted->size == 1);
     TEST_ASSERT(casted->head == casted->tail);
-    TEST_ASSERT(casted->head->next == NULL && casted->head->next == NULL);
+    TEST_ASSERT(casted->head->next == NULL && casted->tail->next == NULL);
 
     task_queue_dealloc(queue);
 
@@ -47,7 +47,7 @@ void test_task_queue_pop() {
 }
 
 void run_all_tests() {
-    printf("RUNNING TESTS\n");
+    printf("RUNNING %s TESTS\n", __FILE__);
     test_task_queue_init();
     test_task_queue_push();
     test_task_queue_pop();
