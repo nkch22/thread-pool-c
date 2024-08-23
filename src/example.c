@@ -10,7 +10,7 @@ void task1() {
 int main(void) {
     thread_pool_t *pool = thread_pool_init(3);
 
-    for (size_t i = 0; i < 300; i++) {
+    for (size_t i = 0; i < 30; i++) {
         thread_pool_add_task(pool, task1);
     }
 
