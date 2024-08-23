@@ -2,7 +2,7 @@ CC = gcc
 INCLUDE_DIRS = -I./include
 LIBS = -lpthread
 CFLAGS = -g -Wall -Wextra -pedantic $(LIBS) $(INCLUDE_DIRS)
-BINARY_NAME = thread_pool_example
+BINARY_NAME = thread-pool-example
 
 BUILD_DIR = build
 $(shell mkdir -p $(BUILD_DIR))
