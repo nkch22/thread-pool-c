@@ -8,12 +8,9 @@ static const char temp_file[] = "tmp.txt";
 static const char target_string[] = "Task finished\n";
 static FILE *tmp = NULL;
 
-pthread_mutex_t mutex;
 
 void dummy_task(void) {
-    pthread_mutex_lock(&mutex);
     fprintf(tmp, "%s", target_string);
-    pthread_mutex_unlock(&mutex);
 }
 
 bool check_test_output(size_t number_of_tasks, FILE *output_file) {
