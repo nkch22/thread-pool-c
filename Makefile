@@ -7,13 +7,18 @@ BINARY_NAME = thread_pool_example
 BUILD_DIR = build
 $(shell mkdir -p $(BUILD_DIR))
 
-all: $(BUILD_DIR)/example.o $(BUILD_DIR)/thread-pool.o $(BUILD_DIR)/task-queue.o
-	$(CC) $(CFLAGS) $^ -o $(BUILD_DIR)/$(BINARY_NAME)
+LIB_NAME = libthread-pool
+
+all: $(BUILD_DIR)/example.o $(BUILD_DIR)/$(LIB_NAME).a
+	$(CC) $(CFLAGS) $(BUILD_DIR)/example.o -o $(BUILD_DIR)/$(BINARY_NAME) -L$(BUILD_DIR) -l:$(LIB_NAME).a
 	rm -f $(BUILD_DIR)/*.o
 
 tests: $(BUILD_DIR)/test-runner.o $(BUILD_DIR)/thread-pool.o $(BUILD_DIR)/task-queue.o $(BUILD_DIR)/thread-pool.test.o $(BUILD_DIR)/task-queue.test.o
 	$(CC) $(CFLAGS) $^ -o $(BUILD_DIR)/$@
 	rm -f $(BUILD_DIR)/*.o
+
+$(BUILD_DIR)/$(LIB_NAME).a: $(BUILD_DIR)/thread-pool.o $(BUILD_DIR)/task-queue.o
+	ar rcs $@ $^
 
 $(BUILD_DIR)/test-runner.o: ./tests/test-runner.c
 	$(CC) $(CFLAGS) $^ -c -o $@
