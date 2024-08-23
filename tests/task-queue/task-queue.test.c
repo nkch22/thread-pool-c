@@ -8,7 +8,7 @@ void test_task_queue_init() {
     TEST_ASSERT(casted->head == NULL && casted->tail == NULL);
     task_queue_dealloc(queue);
 
-    fprintf(stdout, "TEST %s \tPASSED\n", __func__);
+    fprintf(stdout, "TEST %-60s \tPASSED\n", __func__);
 }
 
 void task_function() {
@@ -26,7 +26,7 @@ void test_task_queue_push() {
 
     task_queue_dealloc(queue);
 
-    fprintf(stdout, "TEST %s \tPASSED\n", __func__);
+    fprintf(stdout, "TEST %-60s \tPASSED\n", __func__);
 }
 
 void test_task_queue_pop() {
@@ -43,7 +43,7 @@ void test_task_queue_pop() {
 
     task_queue_dealloc(queue);
 
-    fprintf(stdout, "TEST %s \tPASSED\n", __func__);
+    fprintf(stdout, "TEST %-60s \tPASSED\n", __func__);
 }
 
 void run_all_tests() {
