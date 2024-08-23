@@ -9,11 +9,11 @@ static const char target_string[] = "Task finished\n";
 static FILE *tmp = NULL;
 
 
-void dummy_task(void) {
+static void dummy_task(void) {
     fprintf(tmp, "%s", target_string);
 }
 
-bool check_test_output(size_t number_of_tasks, FILE *output_file) {
+static bool check_test_output(size_t number_of_tasks, FILE *output_file) {
     size_t count = 0;
     size_t length = strlen(target_string) + 1;
     char buffer[length];
@@ -28,7 +28,7 @@ bool check_test_output(size_t number_of_tasks, FILE *output_file) {
     return count == number_of_tasks;
 }
 
-void test_thread_pool_init(void) {
+static void test_thread_pool_init(void) {
     const size_t number_of_threads = 5;
     thread_pool_t *pool = thread_pool_init(number_of_threads);
 
@@ -41,7 +41,7 @@ void test_thread_pool_init(void) {
     thread_pool_dealloc(pool);
 }
 
-void test_thread_pool_add_task_simple(void) {
+static void test_thread_pool_add_task_simple(void) {
     const size_t number_of_threads = 5;
     thread_pool_t *pool = thread_pool_init(number_of_threads);
 
@@ -61,7 +61,7 @@ void test_thread_pool_add_task_simple(void) {
     fprintf(stdout, "TEST %-60s \tPASSED\n", __func__);
 }
 
-void test_thread_pool_add_task_multiple_tasks(void) {
+static void test_thread_pool_add_task_multiple_tasks(void) {
     const size_t number_of_threads = 5;
     const size_t number_of_tasks = 10;
     thread_pool_t *pool = thread_pool_init(number_of_threads);
@@ -80,7 +80,7 @@ void test_thread_pool_add_task_multiple_tasks(void) {
     fprintf(stdout, "TEST %-60s \tPASSED\n", __func__);
 }
 
-void test_thread_pool_dealloc_executes_all_tasks_before_dealloc(void) {
+static void test_thread_pool_dealloc_executes_all_tasks_before_dealloc(void) {
     const size_t number_of_threads = 1;
     const int number_of_tasks = 5;
     thread_pool_t *pool = thread_pool_init(number_of_threads);
@@ -99,7 +99,7 @@ void test_thread_pool_dealloc_executes_all_tasks_before_dealloc(void) {
     fprintf(stdout, "TEST %-60s \tPASSED\n", __func__);
 }
 
-void run_all_tests(void) {
+void run_all_thread_pool_tests(void) {
     tmp = fopen("/dev/null", "w");
     printf("RUNNING %s TESTS\n", __FILE__);
     test_thread_pool_init();
@@ -108,9 +108,4 @@ void run_all_tests(void) {
     test_thread_pool_add_task_multiple_tasks();
     test_thread_pool_dealloc_executes_all_tasks_before_dealloc();
     remove(temp_file);
-}
-
-int main() {
-    run_all_tests();
-    return 0;
 }

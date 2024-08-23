@@ -1,7 +1,7 @@
 #include "../test.h"
 #include "../../src/task-queue/task-queue.private.h"
 
-void test_task_queue_init() {
+static void test_task_queue_init(void) {
     task_queue_t queue = task_queue_init();
     queue_t* casted = (queue_t*)queue;
     TEST_ASSERT(casted->size == 0);
@@ -11,11 +11,11 @@ void test_task_queue_init() {
     fprintf(stdout, "TEST %-60s \tPASSED\n", __func__);
 }
 
-void task_function() {
+static void task_function(void) {
     printf("SOME TEXT\n");
 }
 
-void test_task_queue_push() {
+static void test_task_queue_push(void) {
     task_queue_t queue = task_queue_init();
     queue_t* casted = (queue_t*)queue;
     task_queue_push(queue, task_function);
@@ -29,7 +29,7 @@ void test_task_queue_push() {
     fprintf(stdout, "TEST %-60s \tPASSED\n", __func__);
 }
 
-void test_task_queue_pop() {
+static void test_task_queue_pop(void) {
     task_queue_t queue = task_queue_init();
     queue_t* casted = (queue_t*)queue;
     task_queue_push(queue, task_function);
@@ -46,14 +46,9 @@ void test_task_queue_pop() {
     fprintf(stdout, "TEST %-60s \tPASSED\n", __func__);
 }
 
-void run_all_tests() {
+void run_all_task_queue_tests(void) {
     printf("RUNNING %s TESTS\n", __FILE__);
     test_task_queue_init();
     test_task_queue_push();
     test_task_queue_pop();
-}
-
-int main() {
-   run_all_tests();
-   return 0;
 }
