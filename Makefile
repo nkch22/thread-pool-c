@@ -2,33 +2,36 @@ CC = gcc
 INCLUDE_DIRS = -I./include
 LIBS = -lpthread
 CFLAGS = -g -Wall -Wextra -pedantic $(LIBS) $(INCLUDE_DIRS)
-BINARY_NAME = thread_pool
+BINARY_NAME = thread_pool_example
 
-TESTS_BINARIES = queue-tests thread-pool-tests
+BUILD_DIR = build
+$(shell mkdir -p $(BUILD_DIR))
 
-all: main.o thread-pool.o task-queue.o
-	$(CC) $(CFLAGS) $^ -o $(BINARY_NAME)
+all: $(BUILD_DIR)/example.o $(BUILD_DIR)/thread-pool.o $(BUILD_DIR)/task-queue.o
+	$(CC) $(CFLAGS) $^ -o $(BUILD_DIR)/$(BINARY_NAME)
+	rm -f $(BUILD_DIR)/*.o
 
-thread-pool-tests: thread-pool.o task-queue.o thread-pool.test.o
-	$(CC) $(CFLAGS) $^ -o $@
+tests: $(BUILD_DIR)/test-runner.o $(BUILD_DIR)/thread-pool.o $(BUILD_DIR)/task-queue.o $(BUILD_DIR)/thread-pool.test.o $(BUILD_DIR)/task-queue.test.o
+	$(CC) $(CFLAGS) $^ -o $(BUILD_DIR)/$@
+	rm -f $(BUILD_DIR)/*.o
 
-thread-pool.test.o: ./tests/thread-pool/thread-pool.test.c
-	$(CC) $(CFLAGS) $^ -c
+$(BUILD_DIR)/test-runner.o: ./tests/test-runner.c
+	$(CC) $(CFLAGS) $^ -c -o $@
 
-thread-pool.o: ./src/thread-pool/thread-pool.c
-	$(CC) $(CFLAGS) $^ -c
+$(BUILD_DIR)/thread-pool.test.o: ./tests/thread-pool/thread-pool.test.c
+	$(CC) $(CFLAGS) $^ -c -o $@
 
-queue-tests: task-queue.o task-queue.test.o
-	$(CC) $(CFLAGS) $^ -o $@
+$(BUILD_DIR)/thread-pool.o: ./src/thread-pool/thread-pool.c
+	$(CC) $(CFLAGS) $^ -c -o $@
 
-task-queue.test.o: ./tests/task-queue/task-queue.test.c
-	$(CC) $(CFLAGS) $^ -c
+$(BUILD_DIR)/task-queue.test.o: ./tests/task-queue/task-queue.test.c
+	$(CC) $(CFLAGS) $^ -c -o $@
 
-task-queue.o: ./src/task-queue/task-queue.c
-	$(CC) $(CFLAGS) $^ -c
+$(BUILD_DIR)/task-queue.o: ./src/task-queue/task-queue.c
+	$(CC) $(CFLAGS) $^ -c -o $@
 
-main.o: ./src/main.c
-	$(CC) $(CFLAGS) $^ -c
+$(BUILD_DIR)/example.o: ./src/example.c
+	$(CC) $(CFLAGS) $^ -c -o $@
 
 clean:
-	rm -f *.o $(BINARY_NAME) $(TESTS_BINARIES)
+	rm -rf $(BUILD_DIR)
